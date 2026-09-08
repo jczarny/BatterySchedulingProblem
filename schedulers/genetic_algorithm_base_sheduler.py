@@ -9,15 +9,17 @@ from models.terminal import Terminal
 
 class GeneticAlgorithmScheduler(BaseBatteryScheduler):
     def __init__(self,
-                 population_size: int = 150,
-                 iterations: int = 500,
-                 crossover_rate: float = 0.95,
+                 population_size: int = 100,
+                 iterations: int = 1_000_000_000,
+                 crossover_rate: float = 0.90,
                  mutation_rate: float = 0.15,
-                 survival_rate: float = 0.01,
-                 tournament_size: int = 2,
+                 survival_rate: float = 0.05,
+                 tournament_size: int = 5,
                  mutation_iters: int = 1,
                  apply_neh_ss2: bool = False,
-                 max_time_s: float = 5.00 * 60):
+                 max_time_s: float = 2.50 * 60,
+                 min_solutions: int = 0,
+                 max_solutions: int | None = None):
         self.population_size = population_size
         self.iterations = iterations
         self.crossover_rate = crossover_rate
@@ -27,16 +29,28 @@ class GeneticAlgorithmScheduler(BaseBatteryScheduler):
         self.mutation_iters = mutation_iters
         self.apply_neh_ss2 = apply_neh_ss2
         self.max_time_s = max_time_s
+        self.min_solutions = min_solutions
+        self.max_solutions = max_solutions
 
-        self.max_iters_without_improvement = 100
+        self.max_iters_without_improvement = 1_000_000_000
         self.terminal = None
+        self.solution_count = 0
 
     def fit(self, terminal: Terminal, batteries: list[Battery]) -> ScheduleResult:
         self.terminal = terminal
+        self.solution_count = 0
         start_time = time.time()
 
         population = self.initialize_population(terminal, batteries)
-        makespans = [self.evaluate_makespan(individual) for individual in population]
+        makespans = []
+        evaluated_population = []
+        for individual in population:
+            if self.solution_limit_reached():
+                break
+
+            makespans.append(self.evaluate_makespan(individual))
+            evaluated_population.append(individual)
+        population = evaluated_population
 
         global_best_makespan = float('inf')
         global_best_schedule = []
@@ -44,10 +58,13 @@ class GeneticAlgorithmScheduler(BaseBatteryScheduler):
         makespans_history = []
 
         for iteration in range(self.iterations):
-            if time.time() - start_time > self.max_time_s:
+            if self.time_limit_reached(start_time) or self.solution_limit_reached():
                 break
 
             population_with_makespans = list(zip(population, makespans))
+            if not population_with_makespans:
+                break
+
             population_with_makespans.sort(key=lambda pair: pair[1])
 
             local_best_makespan = population_with_makespans[0][1]
@@ -56,12 +73,12 @@ class GeneticAlgorithmScheduler(BaseBatteryScheduler):
                 global_best_schedule = list(population_with_makespans[0][0])
                 best_permutation_global_iteration = iteration
 
-            makespans_history.append(IterationLog(makespan=global_best_makespan, iteration=iteration, time_elapsed=time.time() - start_time))
+            makespans_history.append(IterationLog(makespan=global_best_makespan, iteration=iteration, time_elapsed=time.time() - start_time, solution_count=self.solution_count))
 
             new_population = []
 
             num_survivors = math.ceil(self.survival_rate * self.population_size)
-            for i in range(num_survivors):
+            for i in range(min(num_survivors, len(population_with_makespans))):
                 new_population.append(list(population_with_makespans[i][0]))
 
             while len(new_population) < self.population_size:
@@ -80,19 +97,29 @@ class GeneticAlgorithmScheduler(BaseBatteryScheduler):
                 new_population.append(child2)
 
             population = new_population[:self.population_size]
-            makespans = [self.evaluate_makespan(i) for i in population]
+            makespans = []
+            evaluated_population = []
+            for individual in population:
+                if self.solution_limit_reached():
+                    break
 
-            if iteration - best_permutation_global_iteration > self.max_iters_without_improvement:
+                makespans.append(self.evaluate_makespan(individual))
+                evaluated_population.append(individual)
+            population = evaluated_population
+
+            if iteration - best_permutation_global_iteration > self.max_iters_without_improvement and self.can_stop_on_no_improvement():
                 break
 
 
         population_with_makespans = list(zip(population, makespans))
-        final_best_pair = min(population_with_makespans, key=lambda pair: pair[1])
+        final_best_pair = min(population_with_makespans, key=lambda pair: pair[1]) if population_with_makespans else None
 
-        if final_best_pair[1] < global_best_makespan:
+        if final_best_pair is not None and final_best_pair[1] < global_best_makespan:
             global_best_makespan = final_best_pair[1]
             global_best_schedule = list(final_best_pair[0])
-            makespans_history[-1] = global_best_makespan
+        if makespans_history:
+            makespans_history[-1].makespan = global_best_makespan
+            makespans_history[-1].solution_count = self.solution_count
 
         end_time = time.time()
 
@@ -101,6 +128,7 @@ class GeneticAlgorithmScheduler(BaseBatteryScheduler):
             batteries=global_best_schedule,
             execution_time=end_time - start_time,
             history=makespans_history,
+            solution_count=self.solution_count,
         )
 
     def initialize_population(self, terminal: Terminal, batteries: list[Battery]) -> list[list[Battery]]:
@@ -120,7 +148,7 @@ class GeneticAlgorithmScheduler(BaseBatteryScheduler):
         return population
 
     def tournament_selection(self, population_with_makespans: list[tuple[list[Battery], float]]) -> Battery:
-        tournament_candidates = rd.sample(population_with_makespans, self.tournament_size)
+        tournament_candidates = rd.sample(population_with_makespans, min(self.tournament_size, len(population_with_makespans)))
         winner = min(tournament_candidates, key=lambda candidate: candidate[1])
         return winner[0]
 
@@ -162,4 +190,6 @@ class GeneticAlgorithmScheduler(BaseBatteryScheduler):
 
     def evaluate_makespan(self, sequence: list[Battery]) -> float:
         self.terminal.load_batteries(sequence)
-        return self.terminal.process()
+        makespan = self.terminal.process()
+        self.solution_count += 1
+        return makespan

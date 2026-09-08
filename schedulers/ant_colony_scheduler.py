@@ -9,13 +9,15 @@ from helpers.general_helper import get_eta
 
 class AntColonyScheduler(BaseBatteryScheduler):
     def __init__(self,
-            num_ants: int = 50,
-            iterations: int = 200,
-            alpha: float = 1.0,
-            beta: float = 1.0,
-            decay: float = 0.1,
-            p_best: float = 0.05,
-            max_time_s: float = 5.00 * 60):
+            num_ants: int = 100,
+            iterations: int = 1_000_000_000,
+            alpha: float = 2.0,
+            beta: float = 5.0,
+            decay: float = 0.15,
+            p_best: float = 0.10,
+            max_time_s: float = 2.50 * 60,
+            min_solutions: int = 0,
+            max_solutions: int | None = None):
         self.num_ants = num_ants
         self.iterations = iterations
         self.alpha = alpha
@@ -23,18 +25,23 @@ class AntColonyScheduler(BaseBatteryScheduler):
         self.decay = decay
         self.p_best = p_best
         self.max_time_s = max_time_s
+        self.min_solutions = min_solutions
+        self.max_solutions = max_solutions
 
         self.etas = None
         self.pheromones = None
         self.pheromone_min_val = 0.1
         self.pheromone_max_val = 1.0
 
-        self.max_iters_without_improvement = 50
+        self.max_iters_without_improvement = 1_000_000_000
+        self.solution_count = 0
 
     def fit(self, terminal: Terminal, batteries: list[Battery]) -> ScheduleResult:
+        self.solution_count = 0
         self.etas = None
         self.pheromones = None
         t_s = time.time()
+        self._fit_start_time = t_s
 
         self.pheromones = [[self.pheromone_max_val for _ in range(len(batteries))] for _ in range(len(batteries))]
         best_permutation_global = []
@@ -43,13 +50,15 @@ class AntColonyScheduler(BaseBatteryScheduler):
 
         makespans_history = []
         for iteration in range(self.iterations):
-            if time.time() - t_s > self.max_time_s:
+            if self.time_limit_reached(t_s) or self.solution_limit_reached():
                 break
 
             best_permutation_local = []
             lowest_makespan_local = float('inf')
-            paths = self.build_paths(batteries)
-            for path in paths:
+            for path in self.iter_paths(batteries):
+                if self.solution_limit_reached():
+                    break
+
                 clean_path = [copy.copy(b) for b in path]
                 for b in clean_path:
                     b.start_time = None
@@ -57,6 +66,7 @@ class AntColonyScheduler(BaseBatteryScheduler):
 
                 terminal.load_batteries(clean_path)
                 makespan = terminal.process()
+                self.solution_count += 1
 
                 if lowest_makespan_local > makespan:
                     lowest_makespan_local = makespan
@@ -66,6 +76,9 @@ class AntColonyScheduler(BaseBatteryScheduler):
                     lowest_makespan_global = makespan
                     best_permutation_global = path
                     best_permutation_global_iteration = iteration
+
+            if lowest_makespan_local == float('inf'):
+                break
 
             for i in range(len(batteries)):
                 for j in range(len(batteries)):
@@ -86,9 +99,9 @@ class AntColonyScheduler(BaseBatteryScheduler):
                     elif self.pheromones[i][j] < self.pheromone_min_val:
                         self.pheromones[i][j] = self.pheromone_min_val
 
-            makespans_history.append(IterationLog(makespan=lowest_makespan_global, iteration=iteration, time_elapsed=time.time() - t_s))
+            makespans_history.append(IterationLog(makespan=lowest_makespan_global, iteration=iteration, time_elapsed=time.time() - t_s, solution_count=self.solution_count))
 
-            if iteration - best_permutation_global_iteration > self.max_iters_without_improvement:
+            if iteration - best_permutation_global_iteration > self.max_iters_without_improvement and self.can_stop_on_no_improvement():
                 break
 
 
@@ -98,26 +111,31 @@ class AntColonyScheduler(BaseBatteryScheduler):
             batteries = best_permutation_global,
             execution_time = t_e - t_s,
             history = makespans_history,
+            solution_count=self.solution_count,
         )
 
-    def build_paths(self, batteries: list[Battery]) -> list[list[Battery]]:
+    def iter_paths(self, batteries: list[Battery]):
         if self.etas is None:
             self.etas = [get_eta(battery) for battery in batteries]
 
-        paths = []
+        battery_indices = {battery: index for index, battery in enumerate(batteries)}
         starting_batteries = rd.choices(batteries, weights=self.etas, k=self.num_ants)
 
         for i in range(self.num_ants):
+            fit_start_time = getattr(self, "_fit_start_time", None)
+            if self.solution_limit_reached() or fit_start_time is not None and self.time_limit_reached(fit_start_time):
+                break
+
             unvisited_batteries = list(batteries)
             path = [starting_batteries[i]]
             unvisited_batteries.remove(starting_batteries[i])
 
             while unvisited_batteries:
-                current_idx = batteries.index(path[-1])
+                current_idx = battery_indices[path[-1]]
                 probabilities = []
 
                 for battery in unvisited_batteries:
-                    candidate_idx = batteries.index(battery)
+                    candidate_idx = battery_indices[battery]
                     tau = self.pheromones[current_idx][candidate_idx]
                     probability = (tau ** self.alpha) * (self.etas[candidate_idx] ** self.beta)
                     probabilities.append(probability)
@@ -126,9 +144,10 @@ class AntColonyScheduler(BaseBatteryScheduler):
                 path.append(next_battery)
                 unvisited_batteries.remove(next_battery)
 
-            paths.append(path)
+            yield path
 
-        return paths
+    def build_paths(self, batteries: list[Battery]) -> list[list[Battery]]:
+        return list(self.iter_paths(batteries))
 
     def update_pheromone_limits(self, best_makespan: float, n_batteries: int) -> None:
         self.pheromone_max_val =  (1 / (1 - self.decay)) * (1 / best_makespan)

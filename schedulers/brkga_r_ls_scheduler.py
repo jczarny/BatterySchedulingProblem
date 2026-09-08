@@ -10,20 +10,22 @@ from helpers.general_helper import get_eta
 class BRKGA_R_LS_Scheduler(GeneticAlgorithmScheduler):
 
     def __init__(self,
-                 population_size: int = 150,
-                 iterations: int = 500,
-                 crossover_rate: float = 0.95,
+                 population_size: int = 100,
+                 iterations: int = 1_000_000_000,
+                 crossover_rate: float = 0.90,
                  mutation_rate: float = 0.15,
-                 survival_rate: float = 0.01,
-                 tournament_size: int = 2,
+                 survival_rate: float = 0.05,
+                 tournament_size: int = 5,
                  mutation_iters: int = 1,
-                 elite_percentage: float = 0.15,
-                 mutant_percentage: float = 0.15,
+                 elite_percentage: float = 0.2,
+                 mutant_percentage: float = 0.1,
                  elite_inheritance_prob: float = 0.65,
-                 restarts_patience: int = 100,
+                 restarts_patience: int = 50,
                  ls_periodic_run_period: int = 100,
-                 ls_range: int = 5,
-                 max_time_s: float = 5.00 * 60):
+                 ls_range: int = 3,
+                 max_time_s: float = 2.50 * 60,
+                 min_solutions: int = 0,
+                 max_solutions: int | None = None):
 
         super().__init__(
             population_size=population_size,
@@ -34,6 +36,8 @@ class BRKGA_R_LS_Scheduler(GeneticAlgorithmScheduler):
             tournament_size=tournament_size,
             mutation_iters=mutation_iters,
             max_time_s=max_time_s,
+            min_solutions=min_solutions,
+            max_solutions=max_solutions,
         )
 
         self.elite_percentage = elite_percentage
@@ -42,16 +46,16 @@ class BRKGA_R_LS_Scheduler(GeneticAlgorithmScheduler):
         self.restarts_patience = restarts_patience
         self.ls_range = ls_range
         self.ls_periodic_run_period = ls_periodic_run_period
-        self.max_iters_without_improvement = 100
+        self.max_iters_without_improvement = 1_000_000_000
 
     def fit(self, terminal: Terminal, batteries: list[Battery]) -> ScheduleResult:
         self.terminal = terminal
         start_time = time.time()
         num_dimensions = len(batteries)
 
-        num_elite = int(self.population_size * self.elite_percentage)
+        num_elite = max(1, int(self.population_size * self.elite_percentage))
         num_mutants = int(self.population_size * self.mutant_percentage)
-        num_crossover = self.population_size - num_elite - num_mutants
+        num_crossover = max(0, self.population_size - num_elite - num_mutants)
 
         population_keys = [[rd.random() for _ in range(num_dimensions)] for _ in range(self.population_size)]
 
@@ -74,12 +78,18 @@ class BRKGA_R_LS_Scheduler(GeneticAlgorithmScheduler):
             makespans = []
 
             for keys in population_keys:
+                if self.solution_limit_reached():
+                    break
+
                 schedule = smallest_position_value_sort(keys, batteries)
                 makespan = self.evaluate_makespan(schedule)
                 decoded_population.append(schedule)
                 makespans.append(makespan)
 
             population_scored = list(zip(population_keys, decoded_population, makespans))
+            if not population_scored:
+                break
+
             population_scored.sort(key=lambda x: x[2])
 
             current_best_keys, current_best_schedule, current_best_makespan = population_scored[0]
@@ -112,7 +122,7 @@ class BRKGA_R_LS_Scheduler(GeneticAlgorithmScheduler):
                 else:
                     iters_without_improvement += 1
 
-            makespans_history.append(IterationLog(makespan=global_best_makespan, iteration=iteration, time_elapsed=time.time() - start_time))
+            makespans_history.append(IterationLog(makespan=global_best_makespan, iteration=iteration, time_elapsed=time.time() - start_time, solution_count=self.solution_count))
 
             if iters_without_improvement >= self.restarts_patience:
                 population_keys = [list(global_best_keys)] + [[rd.random() for _ in range(num_dimensions)] for _ in range(self.population_size - 1)]
@@ -122,7 +132,7 @@ class BRKGA_R_LS_Scheduler(GeneticAlgorithmScheduler):
             next_population_keys = []
 
             elite_set = [ind[0] for ind in population_scored[:num_elite]]
-            non_elite_set = [ind[0] for ind in population_scored[num_elite:]]
+            non_elite_set = [ind[0] for ind in population_scored[num_elite:]] or elite_set
 
             next_population_keys.extend(elite_set)
 
@@ -142,7 +152,7 @@ class BRKGA_R_LS_Scheduler(GeneticAlgorithmScheduler):
 
                 next_population_keys.append(child_keys)
 
-            if iteration - best_permutation_global_iteration > self.max_iters_without_improvement:
+            if iteration - best_permutation_global_iteration > self.max_iters_without_improvement and self.can_stop_on_no_improvement():
                 break
             population_keys = next_population_keys
 
@@ -153,6 +163,7 @@ class BRKGA_R_LS_Scheduler(GeneticAlgorithmScheduler):
             batteries=global_best_schedule,
             execution_time=end_time - start_time,
             history=makespans_history,
+            solution_count=self.solution_count,
         )
 
     def run_local_search(self, schedule: list[Battery], current_makespan: float) -> tuple[list[Battery], float]:
@@ -169,6 +180,9 @@ class BRKGA_R_LS_Scheduler(GeneticAlgorithmScheduler):
                 max_range = min(num_elements, current_idx + self.ls_range + 1)
 
                 for target_idx in range(min_range, max_range):
+                    if self.solution_limit_reached():
+                        break
+
                     if current_idx == target_idx:
                         continue
 
@@ -185,6 +199,9 @@ class BRKGA_R_LS_Scheduler(GeneticAlgorithmScheduler):
                         break
 
                 if is_improved:
+                    break
+
+                if self.solution_limit_reached():
                     break
 
         return best_schedule, best_makespan

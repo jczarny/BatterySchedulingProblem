@@ -9,14 +9,16 @@ from models.terminal import Terminal
 
 class TabuSearchScheduler(BaseBatteryScheduler):
     def __init__(self,
-                 iterations: int = 1000,
-                 neighbourhood_size: int = 40,
+                 iterations: int = 1_000_000_000,
+                 neighbourhood_size: int = 150,
                  dynamic_tenure: bool = True,
-                 base_tabu_tenure: int = 15,
-                 no_improve_diversify: int = 50,
-                 diversification_factor: float = 0.25,
+                 base_tabu_tenure: int = 25,
+                 no_improve_diversify: int = 100,
+                 diversification_factor: float = 0.15,
                  apply_neh_ss2: bool = False,
-                 max_time_s: float = 5.00 * 60):
+                 max_time_s: float = 2.50 * 60,
+                 min_solutions: int = 0,
+                 max_solutions: int | None = None):
         self.iterations = iterations
         self.neighbourhood_size = neighbourhood_size
         self.base_tabu_tenure = base_tabu_tenure
@@ -25,12 +27,16 @@ class TabuSearchScheduler(BaseBatteryScheduler):
         self.diversification_factor = diversification_factor
         self.apply_neh_ss2 = apply_neh_ss2
         self.max_time_s = max_time_s
+        self.min_solutions = min_solutions
+        self.max_solutions = max_solutions
         self.terminal = None
-        self.max_iters_without_improvement = 4*no_improve_diversify
+        self.max_iters_without_improvement = 1_000_000_000
+        self.solution_count = 0
 
     def fit(self, terminal: Terminal, batteries: list[Battery]) -> ScheduleResult:
         self.terminal = terminal
-        t_s = time.time_ns()
+        self.solution_count = 0
+        t_s = time.time()
         n = len(batteries)
 
         if self.apply_neh_ss2:
@@ -40,17 +46,21 @@ class TabuSearchScheduler(BaseBatteryScheduler):
 
         terminal.load_batteries(best_solution)
         best_makespan = terminal.process()
+        self.solution_count += 1
 
         tabu_dict = {}
         current_solution = list(best_solution)
-        makespans_history = [IterationLog(makespan=best_makespan, iteration=-1, time_elapsed=time.time())]
+        makespans_history = [IterationLog(makespan=best_makespan, iteration=-1, time_elapsed=0.0, solution_count=self.solution_count)]
         iters_without_improvement = 0
 
         for current_iteration in range(self.iterations):
-            if time.time() - t_s > self.max_time_s:
+            if self.time_limit_reached(t_s) or self.solution_limit_reached():
                 break
 
             neighbour_swaps = self.generate_neighbourhood_swaps(current_solution)
+            if not neighbour_swaps:
+                break
+
             neighbour_swaps.sort(key=lambda x: x[3])
 
             iteration_improved = False
@@ -77,21 +87,22 @@ class TabuSearchScheduler(BaseBatteryScheduler):
             else:
                 iters_without_improvement += 1
 
-            makespans_history.append(IterationLog(makespan=best_makespan, iteration=current_iteration, time_elapsed=time.time() - t_s))
+            makespans_history.append(IterationLog(makespan=best_makespan, iteration=current_iteration, time_elapsed=time.time() - t_s, solution_count=self.solution_count))
 
             if iters_without_improvement % self.no_improve_diversify == 0 and iters_without_improvement > 0:
                 current_solution = self.diversify(best_solution)
                 tabu_dict = {}
 
-            if iters_without_improvement >= self.max_iters_without_improvement:
+            if iters_without_improvement >= self.max_iters_without_improvement and self.can_stop_on_no_improvement():
                 break
 
-        t_e = time.time_ns()
+        t_e = time.time()
         return ScheduleResult(
             makespan=best_makespan,
             batteries=best_solution,
             execution_time=t_e - t_s,
             history=makespans_history,
+            solution_count=self.solution_count,
         )
 
     def generate_neighbourhood_swaps(self, current_solution: list[Battery]) -> list:
@@ -99,6 +110,9 @@ class TabuSearchScheduler(BaseBatteryScheduler):
         n = len(current_solution)
 
         for _ in range(self.neighbourhood_size):
+            if self.solution_limit_reached():
+                break
+
             idx1, idx2 = rd.sample(range(n), 2)
             if idx1 > idx2:
                 idx1, idx2 = idx2, idx1
@@ -108,6 +122,7 @@ class TabuSearchScheduler(BaseBatteryScheduler):
 
             self.terminal.load_batteries(neighbour_solution)
             makespan = self.terminal.process()
+            self.solution_count += 1
 
             neighbour_swaps.append([
                 neighbour_solution[idx1].id,

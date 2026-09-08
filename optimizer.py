@@ -16,32 +16,32 @@ from schedulers.two_phase_ga_scheduler import TwoPhaseGAScheduler
 
 HEURISTIC_PARAM_GRIDS = {
     "ACO": {
-        "num_ants": [50, 100, 150],
+        "num_ants": [50, 100],
         "alpha": [1.0, 2.0, 5.0],
         "beta": [1.0, 2.0, 5.0],
-        "decay": [0.05, 0.1, 0.25],
+        "decay": [0.05, 0.15],
         "p_best": [0.1, 0.2],
     },
     "HPSO": {
-        "num_particles": [50, 100, 150],
+        "num_particles": [50, 100],
         "stubbornness_coefficient": [0.5, 1, 2.0],
         "personal_impact_coefficient": [0.5, 1, 2.0],
         "environmental_impact_coefficient": [0.5, 1, 2.0],
-        "cooling_rate": [0.9, 0.95, 0.98],
+        "cooling_rate": [0.9, 0.96],
     },
     "TS": {
         "neighbourhood_size": [50, 100, 150],
-        "dynamic_tenure": [True, False],
+        "dynamic_tenure": [True],
         "base_tabu_tenure": [10, 15, 25],
         "no_improve_diversify": [25, 50, 100],
         "diversification_factor": [0.1, 0.15, 0.25],
     },
     "GA": {
-        "population_size": [50, 100, 150],
-        "crossover_rate": [0.75, 0.85, 0.95],
+        "population_size": [50, 100],
+        "crossover_rate": [0.75, 0.90],
         "mutation_rate": [0.05, 0.1, 0.15],
         "survival_rate": [0.05, 0.1, 0.15],
-        "tournament_size": [2, 3, 5],
+        "tournament_size": [2, 5],
         "mutation_iters": [1, 3],
     },
     "2PGA": {
@@ -50,17 +50,26 @@ HEURISTIC_PARAM_GRIDS = {
         "pop_f_ratio": [0.05, 0.1, 0.2],
     },
     "BRKGA-R-LS": {
-        "elite_percentage": [10, 15, 20],
-        "mutant_percentage": [10, 15, 20],
-        "elite_inheritance_prob": [0.65, 0.75, 0.85],
+        "elite_percentage": [0.10, 0.20],
+        "mutant_percentage": [0.10, 0.20],
+        "elite_inheritance_prob": [0.65, 0.85],
         "restarts_patience": [50, 100],
         "ls_range": [3, 7],
         "ls_periodic_run_period": [50, 100],
     }
 }
 
+SCHEDULER_LIMITS = {
+    "ACO": {"min_solutions": 20_000, "max_solutions": 1_000_000, "max_time_s": 120.0},
+    "HPSO": {"min_solutions": 60_000, "max_solutions": 1_000_000, "max_time_s": 120.0},
+    "TS": {"min_solutions": 100_000, "max_solutions": 1_000_000, "max_time_s": 120.0},
+    "GA": {"min_solutions": 20_000, "max_solutions": 1_000_000, "max_time_s": 120.0},
+    "2PGA": {"min_solutions": 100_000, "max_solutions": 300_000, "max_time_s": 120.0},
+    "BRKGA-R-LS": {"min_solutions": 100_000, "max_solutions": 1_000_000, "max_time_s": 120.0},
+}
+
 class RunRecord:
-    def __init__(self, scheduler_name, config, config_id, instance_id, size, makespan, execution_time_s):
+    def __init__(self, scheduler_name, config, config_id, instance_id, size, makespan, execution_time_s, solution_count):
         self.scheduler_name = scheduler_name
         self.config = config
         self.config_id = config_id
@@ -68,18 +77,20 @@ class RunRecord:
         self.size = size
         self.makespan = makespan
         self.execution_time_s = execution_time_s
+        self.solution_count = solution_count
         self.best_known_makespan = None
         self.rpd = None
 
 
 class SummaryRecord:
-    def __init__(self, scheduler_name, config, config_id, average_rpd, average_makespan, average_execution_time_s):
+    def __init__(self, scheduler_name, config, config_id, average_rpd, average_makespan, average_execution_time_s, average_solution_count):
         self.scheduler_name = scheduler_name
         self.config = config
         self.config_id = config_id
         self.average_rpd = average_rpd
         self.average_makespan = average_makespan
         self.average_execution_time_s = average_execution_time_s
+        self.average_solution_count = average_solution_count
 
 
 class GridSearchResult:
@@ -125,12 +136,16 @@ class GridSearchOptimizer:
             initial_power_consumption_range,
             instance_sizes=(20, 50, 100),
             instances_per_size=3,
+            scheduler_limits=None,
+            iterations_limit=1_000_000,
     ):
         self.terminal_max_power = terminal_max_power
         self.energy_missing_range = energy_missing_range
         self.initial_power_consumption_range = initial_power_consumption_range
         self.instance_sizes = tuple(instance_sizes)
         self.instances_per_size = instances_per_size
+        self.scheduler_limits = scheduler_limits if scheduler_limits is not None else SCHEDULER_LIMITS
+        self.iterations_limit = iterations_limit
         self.seed = 123
 
     def tune(self, scheduler_name):
@@ -148,12 +163,19 @@ class GridSearchOptimizer:
                     f"[{len(runs) + 1}/{total_cases}] {scheduler_name} | config={config_id} | instance={id} | instance_size={len(instance)} | config={config}")
 
                 terminal = Terminal(max_power_capacity=self.terminal_max_power)
-                scheduler = scheduler_class(**config)
+                scheduler_config = dict(config)
+                scheduler_config.update(self.scheduler_limits.get(scheduler_name, {}))
+                scheduler_config.setdefault("iterations", self.iterations_limit)
+                scheduler = scheduler_class(**scheduler_config)
 
                 start_time = time.time()
                 instance_copy = copy.deepcopy(instance)
                 result = scheduler.fit(terminal, instance_copy)
                 time_elapsed = time.time() - start_time
+                print(
+                    f"Done | {scheduler_name} | config={config_id} | instance={id} | "
+                    f"makespan={result.makespan:.4f} | solutions={result.solution_count} | time={time_elapsed:.2f}s"
+                )
 
                 runs.append(
                     RunRecord(
@@ -163,7 +185,8 @@ class GridSearchOptimizer:
                         instance_id=id,
                         size=len(instance),
                         makespan=float(result.makespan),
-                        execution_time_s=time_elapsed
+                        execution_time_s=time_elapsed,
+                        solution_count=result.solution_count,
                     )
                 )
 
@@ -186,6 +209,7 @@ class GridSearchOptimizer:
             avg_rpd = sum(r.rpd for r in config_runs) / len(config_runs)
             avg_makespan = sum(r.makespan for r in config_runs) / len(config_runs)
             avg_time = sum(r.execution_time_s for r in config_runs) / len(config_runs)
+            avg_solution_count = sum(r.solution_count for r in config_runs) / len(config_runs)
 
             summaries.append(
                 SummaryRecord(
@@ -194,7 +218,8 @@ class GridSearchOptimizer:
                     config_id=config_id,
                     average_rpd=avg_rpd,
                     average_makespan=avg_makespan,
-                    average_execution_time_s=avg_time
+                    average_execution_time_s=avg_time,
+                    average_solution_count=avg_solution_count,
                 )
             )
 
@@ -221,7 +246,7 @@ class GridSearchOptimizer:
 def print_top(result, top_n=5):
     for i, row in enumerate(result.best(top_n), start=1):
         print(
-            f"#{i} | {row.scheduler_name} | Avg RPD: {row.average_rpd:.4f}% | Avg Time: {row.average_execution_time_s:.2f}s | Config: {row.config}")
+            f"#{i} | {row.scheduler_name} | Avg RPD: {row.average_rpd:.4f}% | Avg Solutions: {row.average_solution_count:.0f} | Avg Time: {row.average_execution_time_s:.2f}s | Config: {row.config}")
 
 def get_scheduler_class_by_name(scheduler_class):
     match scheduler_class:
@@ -250,7 +275,7 @@ def clear_batteries(batteries: list[Battery]):
 
 
 if __name__ == '__main__':
-    for algorithm_name in ['HPSO', 'ACO', '2PGA', 'BRKGA-R-LS']:
+    for algorithm_name in HEURISTIC_PARAM_GRIDS:
         optimizer = GridSearchOptimizer(
             terminal_max_power=100.0,
             energy_missing_range=(100.0, 1000.0),

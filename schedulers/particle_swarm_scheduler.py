@@ -18,16 +18,18 @@ class Particle:
 
 class ParticleSwarmScheduler(BaseBatteryScheduler):
     def __init__(self,
-                 num_particles: int = 40,
-                 iterations: int = 200,
-                 stubbornness_coefficient: float = 0.9,
+                 num_particles: int = 100,
+                 iterations: int = 1_000_000_000,
+                 stubbornness_coefficient: float = 0.5,
                  personal_impact_coefficient: float = 2.0,
-                 environmental_impact_coefficient: float = 2.0,
+                 environmental_impact_coefficient: float = 0.5,
                  final_temperature: float = 0.5,
-                 cooling_rate: float = 0.98,
+                 cooling_rate: float = 0.9,
                  apply_vns: bool = True,
                  apply_sa: bool = True,
-                 max_time_s: float = 5.00 * 60
+                 max_time_s: float = 2.50 * 60,
+                 min_solutions: int = 0,
+                 max_solutions: int | None = None
                  ):
         self.num_particles = num_particles
         self.iterations = iterations
@@ -39,17 +41,21 @@ class ParticleSwarmScheduler(BaseBatteryScheduler):
         self.apply_vns = apply_vns
         self.apply_sa = apply_sa
         self.max_time_s = max_time_s
+        self.min_solutions = min_solutions
+        self.max_solutions = max_solutions
 
         self.initial_temperature = 100.0
         self.vns_max_iterations = 0
         self.max_velocity = 5.0
         self.terminal = None
-        self.max_iters_without_improvement = 50
+        self.max_iters_without_improvement = 1_000_000_000
+        self.solution_count = 0
 
     def fit(self, terminal: Terminal, batteries: list[Battery]) -> ScheduleResult:
         self.terminal = terminal
+        self.solution_count = 0
         self.vns_max_iterations = min(len(batteries) * 5, 1000)
-        start_time = time.time_ns()
+        start_time = time.time()
         num_dimensions = len(batteries)
 
         swarm = [Particle(num_dimensions) for _ in range(self.num_particles)]
@@ -66,6 +72,9 @@ class ParticleSwarmScheduler(BaseBatteryScheduler):
 
         makespans_history = []
         for particle in swarm:
+            if self.solution_limit_reached():
+                break
+
             current_schedule = smallest_position_value_sort(particle.position, batteries)
             current_makespan = self.evaluate_makespan(current_schedule)
 
@@ -78,10 +87,13 @@ class ParticleSwarmScheduler(BaseBatteryScheduler):
                 global_best_schedule = current_schedule
 
         for iteration in range(self.iterations):
-            if time.time() - start_time > self.max_time_s:
+            if self.time_limit_reached(start_time) or self.solution_limit_reached():
                 break
 
             for particle in swarm:
+                if self.solution_limit_reached():
+                    break
+
                 for d in range(num_dimensions):
                     # Equation explained more thoroughly in https://en.wikipedia.org/wiki/Particle_swarm_optimization
                     r1 = rd.random()
@@ -111,6 +123,9 @@ class ParticleSwarmScheduler(BaseBatteryScheduler):
 
             if self.apply_vns:
                 for _ in range(self.vns_max_iterations):
+                    if self.solution_limit_reached():
+                        break
+
                     current_schedule = self.generate_swapped_neighbourhood(global_best_schedule)
                     current_makespan = self.evaluate_makespan(current_schedule)
                     if global_best_makespan > current_makespan:
@@ -124,6 +139,9 @@ class ParticleSwarmScheduler(BaseBatteryScheduler):
                 sa_current_makespan = global_best_makespan
 
                 while current_temperature >= self.final_temperature:
+                    if self.solution_limit_reached():
+                        break
+
                     neighbor_schedule = self.generate_swapped_neighbourhood(sa_current_schedule)
                     neighbor_makespan = self.evaluate_makespan(neighbor_schedule)
 
@@ -140,18 +158,19 @@ class ParticleSwarmScheduler(BaseBatteryScheduler):
 
                     current_temperature *= self.cooling_rate
 
-            makespans_history.append(IterationLog(makespan=global_best_makespan, iteration=iteration, time_elapsed=time.time() - start_time))
+            makespans_history.append(IterationLog(makespan=global_best_makespan, iteration=iteration, time_elapsed=time.time() - start_time, solution_count=self.solution_count))
 
-            if iteration - best_permutation_global_iteration > self.max_iters_without_improvement:
+            if iteration - best_permutation_global_iteration > self.max_iters_without_improvement and self.can_stop_on_no_improvement():
                 break
 
-        end_time = time.time_ns()
+        end_time = time.time()
 
         return ScheduleResult(
-            makespan=makespans_history[-1].makespan,
+            makespan=global_best_makespan,
             batteries=global_best_schedule,
             execution_time=end_time - start_time,
             history=makespans_history,
+            solution_count=self.solution_count,
         )
 
     def generate_swapped_neighbourhood(self, current_schedule: list[Battery]) -> list[Battery]:
@@ -163,7 +182,9 @@ class ParticleSwarmScheduler(BaseBatteryScheduler):
 
     def evaluate_makespan(self, sequence: list[Battery]) -> float:
         self.terminal.load_batteries(sequence)
-        return self.terminal.process()
+        makespan = self.terminal.process()
+        self.solution_count += 1
+        return makespan
 
     def generate_bias(self, batteries: list[Battery]) -> list[float]:
         etas = [get_eta(battery) for battery in batteries]

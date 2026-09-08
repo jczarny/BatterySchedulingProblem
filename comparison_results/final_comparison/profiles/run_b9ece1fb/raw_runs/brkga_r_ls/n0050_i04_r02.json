@@ -1,0 +1,1362 @@
+{
+  "profile_id": "run_b9ece1fb",
+  "status": "ok",
+  "algorithm": "BRKGA-R-LS",
+  "instance_id": "n0050_i04",
+  "repetition": 2,
+  "makespan": 169.76485205088414,
+  "execution_time_s": 150.0007811000105,
+  "time_overrun_s": 0.0007811000104993582,
+  "solution_count": 911262,
+  "termination_reason": "time_limit",
+  "hit_time_limit": true,
+  "best_sequence_ids": [
+    "n0050_i04_b0022",
+    "n0050_i04_b0041",
+    "n0050_i04_b0005",
+    "n0050_i04_b0008",
+    "n0050_i04_b0014",
+    "n0050_i04_b0023",
+    "n0050_i04_b0030",
+    "n0050_i04_b0036",
+    "n0050_i04_b0002",
+    "n0050_i04_b0003",
+    "n0050_i04_b0016",
+    "n0050_i04_b0028",
+    "n0050_i04_b0013",
+    "n0050_i04_b0001",
+    "n0050_i04_b0027",
+    "n0050_i04_b0006",
+    "n0050_i04_b0011",
+    "n0050_i04_b0020",
+    "n0050_i04_b0007",
+    "n0050_i04_b0025",
+    "n0050_i04_b0017",
+    "n0050_i04_b0010",
+    "n0050_i04_b0004",
+    "n0050_i04_b0038",
+    "n0050_i04_b0024",
+    "n0050_i04_b0009",
+    "n0050_i04_b0044",
+    "n0050_i04_b0042",
+    "n0050_i04_b0026",
+    "n0050_i04_b0019",
+    "n0050_i04_b0012",
+    "n0050_i04_b0015",
+    "n0050_i04_b0033",
+    "n0050_i04_b0032",
+    "n0050_i04_b0045",
+    "n0050_i04_b0034",
+    "n0050_i04_b0031",
+    "n0050_i04_b0018",
+    "n0050_i04_b0037",
+    "n0050_i04_b0035",
+    "n0050_i04_b0047",
+    "n0050_i04_b0043",
+    "n0050_i04_b0039",
+    "n0050_i04_b0021",
+    "n0050_i04_b0050",
+    "n0050_i04_b0046",
+    "n0050_i04_b0029",
+    "n0050_i04_b0049",
+    "n0050_i04_b0040",
+    "n0050_i04_b0048"
+  ],
+  "improvements": [
+    {
+      "time_elapsed_s": 0.00038320000749081373,
+      "solution_count": 1,
+      "makespan": 173.44310348454187
+    },
+    {
+      "time_elapsed_s": 0.021126899984665215,
+      "solution_count": 141,
+      "makespan": 173.2764156895112
+    },
+    {
+      "time_elapsed_s": 0.029650299926288426,
+      "solution_count": 202,
+      "makespan": 173.20768110191958
+    },
+    {
+      "time_elapsed_s": 0.033944300026632845,
+      "solution_count": 232,
+      "makespan": 173.12831533112123
+    },
+    {
+      "time_elapsed_s": 0.04124039993621409,
+      "solution_count": 284,
+      "makespan": 173.11480648289054
+    },
+    {
+      "time_elapsed_s": 0.05258959997445345,
+      "solution_count": 366,
+      "makespan": 173.09379648811588
+    },
+    {
+      "time_elapsed_s": 0.0656757999677211,
+      "solution_count": 460,
+      "makespan": 173.09042987898917
+    },
+    {
+      "time_elapsed_s": 0.0778518000151962,
+      "solution_count": 548,
+      "makespan": 173.08253086751847
+    },
+    {
+      "time_elapsed_s": 0.08299309993162751,
+      "solution_count": 584,
+      "makespan": 173.07409374220973
+    },
+    {
+      "time_elapsed_s": 0.09095390001311898,
+      "solution_count": 642,
+      "makespan": 173.0658619223979
+    },
+    {
+      "time_elapsed_s": 0.10117659997195005,
+      "solution_count": 712,
+      "makespan": 173.06081772443855
+    },
+    {
+      "time_elapsed_s": 0.1090723000233993,
+      "solution_count": 770,
+      "makespan": 173.05970432235776
+    },
+    {
+      "time_elapsed_s": 0.11963530001230538,
+      "solution_count": 846,
+      "makespan": 173.0592775755697
+    },
+    {
+      "time_elapsed_s": 0.12766220001503825,
+      "solution_count": 904,
+      "makespan": 173.05309552764584
+    },
+    {
+      "time_elapsed_s": 0.12859590002335608,
+      "solution_count": 911,
+      "makespan": 173.05309552764578
+    },
+    {
+      "time_elapsed_s": 0.1455448999768123,
+      "solution_count": 1031,
+      "makespan": 173.03874891153927
+    },
+    {
+      "time_elapsed_s": 0.15115049993619323,
+      "solution_count": 1072,
+      "makespan": 173.03741023904908
+    },
+    {
+      "time_elapsed_s": 0.15679529996123165,
+      "solution_count": 1112,
+      "makespan": 173.0342468050465
+    },
+    {
+      "time_elapsed_s": 0.1632599999429658,
+      "solution_count": 1158,
+      "makespan": 173.03011014555483
+    },
+    {
+      "time_elapsed_s": 0.16872700001113117,
+      "solution_count": 1198,
+      "makespan": 173.02935635321867
+    },
+    {
+      "time_elapsed_s": 0.17685699998401105,
+      "solution_count": 1256,
+      "makespan": 173.02678579165186
+    },
+    {
+      "time_elapsed_s": 0.1822507999604568,
+      "solution_count": 1296,
+      "makespan": 173.02549174008698
+    },
+    {
+      "time_elapsed_s": 0.18863909994252026,
+      "solution_count": 1342,
+      "makespan": 173.02132022219465
+    },
+    {
+      "time_elapsed_s": 0.19661600003018975,
+      "solution_count": 1397,
+      "makespan": 173.01244631259428
+    },
+    {
+      "time_elapsed_s": 0.21298950002528727,
+      "solution_count": 1515,
+      "makespan": 172.97566832396384
+    },
+    {
+      "time_elapsed_s": 0.2194002999458462,
+      "solution_count": 1561,
+      "makespan": 172.96237975390886
+    },
+    {
+      "time_elapsed_s": 0.22837399994023144,
+      "solution_count": 1625,
+      "makespan": 172.96175820284947
+    },
+    {
+      "time_elapsed_s": 0.251341599971056,
+      "solution_count": 1791,
+      "makespan": 172.9548619858751
+    },
+    {
+      "time_elapsed_s": 0.27691809996031225,
+      "solution_count": 1976,
+      "makespan": 172.94317878307757
+    },
+    {
+      "time_elapsed_s": 0.30177729995921254,
+      "solution_count": 2154,
+      "makespan": 172.91425393557256
+    },
+    {
+      "time_elapsed_s": 0.3246767999371514,
+      "solution_count": 2320,
+      "makespan": 172.91120653960272
+    },
+    {
+      "time_elapsed_s": 0.3500830000266433,
+      "solution_count": 2504,
+      "makespan": 172.903151042758
+    },
+    {
+      "time_elapsed_s": 0.37819129996933043,
+      "solution_count": 2707,
+      "makespan": 172.89012833177642
+    },
+    {
+      "time_elapsed_s": 0.4054203999694437,
+      "solution_count": 2903,
+      "makespan": 172.86987549703673
+    },
+    {
+      "time_elapsed_s": 0.4328858000226319,
+      "solution_count": 3100,
+      "makespan": 172.85636273606218
+    },
+    {
+      "time_elapsed_s": 0.4632985999342054,
+      "solution_count": 3316,
+      "makespan": 172.7864453746635
+    },
+    {
+      "time_elapsed_s": 0.48786719993222505,
+      "solution_count": 3494,
+      "makespan": 172.78208264477178
+    },
+    {
+      "time_elapsed_s": 0.516462599975057,
+      "solution_count": 3702,
+      "makespan": 172.77589780282824
+    },
+    {
+      "time_elapsed_s": 0.5411493999417871,
+      "solution_count": 3880,
+      "makespan": 172.75155445491595
+    },
+    {
+      "time_elapsed_s": 0.5701668999390677,
+      "solution_count": 4089,
+      "makespan": 172.71483905325135
+    },
+    {
+      "time_elapsed_s": 0.6006508999271318,
+      "solution_count": 4311,
+      "makespan": 172.60655421454373
+    },
+    {
+      "time_elapsed_s": 0.6266953999875113,
+      "solution_count": 4495,
+      "makespan": 172.60268242161675
+    },
+    {
+      "time_elapsed_s": 0.65372069994919,
+      "solution_count": 4693,
+      "makespan": 172.54055504014065
+    },
+    {
+      "time_elapsed_s": 0.6783515999559313,
+      "solution_count": 4871,
+      "makespan": 172.51550100099882
+    },
+    {
+      "time_elapsed_s": 0.7061569999204949,
+      "solution_count": 5073,
+      "makespan": 172.46729122706057
+    },
+    {
+      "time_elapsed_s": 0.7334581000031903,
+      "solution_count": 5269,
+      "makespan": 172.44689144779028
+    },
+    {
+      "time_elapsed_s": 0.7663165000267327,
+      "solution_count": 5507,
+      "makespan": 172.12132659456736
+    },
+    {
+      "time_elapsed_s": 0.7978324999567121,
+      "solution_count": 5733,
+      "makespan": 172.11795207628563
+    },
+    {
+      "time_elapsed_s": 0.8223852999508381,
+      "solution_count": 5911,
+      "makespan": 172.10687893953977
+    },
+    {
+      "time_elapsed_s": 0.8495264999801293,
+      "solution_count": 6107,
+      "makespan": 172.08677192568575
+    },
+    {
+      "time_elapsed_s": 0.880161999957636,
+      "solution_count": 6327,
+      "makespan": 172.07749181410426
+    },
+    {
+      "time_elapsed_s": 0.9131657999241725,
+      "solution_count": 6567,
+      "makespan": 172.02232658519443
+    },
+    {
+      "time_elapsed_s": 0.9419912999728695,
+      "solution_count": 6776,
+      "makespan": 172.0057372708214
+    },
+    {
+      "time_elapsed_s": 0.9706758999964222,
+      "solution_count": 6982,
+      "makespan": 171.99324095710494
+    },
+    {
+      "time_elapsed_s": 0.9983125999569893,
+      "solution_count": 7184,
+      "makespan": 171.98407317105173
+    },
+    {
+      "time_elapsed_s": 1.026236500008963,
+      "solution_count": 7387,
+      "makespan": 171.94693669409688
+    },
+    {
+      "time_elapsed_s": 1.059307000017725,
+      "solution_count": 7627,
+      "makespan": 171.86993874996512
+    },
+    {
+      "time_elapsed_s": 1.0883634999627247,
+      "solution_count": 7835,
+      "makespan": 171.83495314376503
+    },
+    {
+      "time_elapsed_s": 1.1187695999396965,
+      "solution_count": 8055,
+      "makespan": 171.82916114194032
+    },
+    {
+      "time_elapsed_s": 1.143176699988544,
+      "solution_count": 8234,
+      "makespan": 171.82725144336277
+    },
+    {
+      "time_elapsed_s": 1.1657291000010446,
+      "solution_count": 8400,
+      "makespan": 171.82290732156588
+    },
+    {
+      "time_elapsed_s": 1.1923128999769688,
+      "solution_count": 8592,
+      "makespan": 171.73404696865853
+    },
+    {
+      "time_elapsed_s": 1.2150270999409258,
+      "solution_count": 8758,
+      "makespan": 171.73234834184174
+    },
+    {
+      "time_elapsed_s": 1.2410371999721974,
+      "solution_count": 8946,
+      "makespan": 171.728692610024
+    },
+    {
+      "time_elapsed_s": 1.2697811999823898,
+      "solution_count": 9154,
+      "makespan": 171.71925257909376
+    },
+    {
+      "time_elapsed_s": 1.293471899931319,
+      "solution_count": 9328,
+      "makespan": 171.71326800402215
+    },
+    {
+      "time_elapsed_s": 1.329413800034672,
+      "solution_count": 9590,
+      "makespan": 171.69102496338758
+    },
+    {
+      "time_elapsed_s": 1.831442299997434,
+      "solution_count": 12865,
+      "makespan": 171.62199950532863
+    },
+    {
+      "time_elapsed_s": 1.8374805999919772,
+      "solution_count": 12908,
+      "makespan": 171.59478461396236
+    },
+    {
+      "time_elapsed_s": 1.8464353999588639,
+      "solution_count": 12973,
+      "makespan": 171.5737291808635
+    },
+    {
+      "time_elapsed_s": 1.8562525999732316,
+      "solution_count": 13045,
+      "makespan": 171.56227633595256
+    },
+    {
+      "time_elapsed_s": 1.8653870000271127,
+      "solution_count": 13111,
+      "makespan": 171.55564332912192
+    },
+    {
+      "time_elapsed_s": 1.874336599954404,
+      "solution_count": 13175,
+      "makespan": 171.55476542472806
+    },
+    {
+      "time_elapsed_s": 1.883269299985841,
+      "solution_count": 13241,
+      "makespan": 171.52575484246773
+    },
+    {
+      "time_elapsed_s": 1.8923928999574855,
+      "solution_count": 13306,
+      "makespan": 171.50915298626677
+    },
+    {
+      "time_elapsed_s": 1.9011685999576002,
+      "solution_count": 13370,
+      "makespan": 171.49643186622876
+    },
+    {
+      "time_elapsed_s": 1.913996099960059,
+      "solution_count": 13464,
+      "makespan": 171.48274471157876
+    },
+    {
+      "time_elapsed_s": 1.922534400015138,
+      "solution_count": 13526,
+      "makespan": 171.48223497012827
+    },
+    {
+      "time_elapsed_s": 1.9229425999801606,
+      "solution_count": 13529,
+      "makespan": 171.48223497012825
+    },
+    {
+      "time_elapsed_s": 1.944041599985212,
+      "solution_count": 13683,
+      "makespan": 171.4811227386068
+    },
+    {
+      "time_elapsed_s": 1.9511698000133038,
+      "solution_count": 13736,
+      "makespan": 171.47993335730362
+    },
+    {
+      "time_elapsed_s": 1.9650425999425352,
+      "solution_count": 13838,
+      "makespan": 171.4773250071928
+    },
+    {
+      "time_elapsed_s": 1.9861974000232294,
+      "solution_count": 13992,
+      "makespan": 171.47591496091752
+    },
+    {
+      "time_elapsed_s": 2.010464399936609,
+      "solution_count": 14170,
+      "makespan": 171.47475127947192
+    },
+    {
+      "time_elapsed_s": 2.1206178999273106,
+      "solution_count": 14934,
+      "makespan": 171.3688685734823
+    },
+    {
+      "time_elapsed_s": 2.12674610002432,
+      "solution_count": 14976,
+      "makespan": 171.3007290403598
+    },
+    {
+      "time_elapsed_s": 2.132207499933429,
+      "solution_count": 15016,
+      "makespan": 171.29727270002564
+    },
+    {
+      "time_elapsed_s": 2.1323441999265924,
+      "solution_count": 15017,
+      "makespan": 171.29727270002562
+    },
+    {
+      "time_elapsed_s": 2.137909199926071,
+      "solution_count": 15058,
+      "makespan": 171.29204881500686
+    },
+    {
+      "time_elapsed_s": 2.140283799963072,
+      "solution_count": 15075,
+      "makespan": 171.29204881500684
+    },
+    {
+      "time_elapsed_s": 2.1458011999493465,
+      "solution_count": 15115,
+      "makespan": 171.28123860343428
+    },
+    {
+      "time_elapsed_s": 2.152067399933003,
+      "solution_count": 15161,
+      "makespan": 171.28101828625083
+    },
+    {
+      "time_elapsed_s": 2.1585703999735415,
+      "solution_count": 15208,
+      "makespan": 171.27812040514664
+    },
+    {
+      "time_elapsed_s": 2.164972399943508,
+      "solution_count": 15255,
+      "makespan": 171.27511629416512
+    },
+    {
+      "time_elapsed_s": 2.171268199919723,
+      "solution_count": 15301,
+      "makespan": 171.2702201874567
+    },
+    {
+      "time_elapsed_s": 2.1786182000068948,
+      "solution_count": 15355,
+      "makespan": 171.1302804604398
+    },
+    {
+      "time_elapsed_s": 2.1849709999514744,
+      "solution_count": 15401,
+      "makespan": 171.12932757954758
+    },
+    {
+      "time_elapsed_s": 2.1914839999517426,
+      "solution_count": 15448,
+      "makespan": 171.11569855228984
+    },
+    {
+      "time_elapsed_s": 2.2077852999791503,
+      "solution_count": 15566,
+      "makespan": 171.10132663213633
+    },
+    {
+      "time_elapsed_s": 2.2140858999919146,
+      "solution_count": 15612,
+      "makespan": 171.09978981373698
+    },
+    {
+      "time_elapsed_s": 2.22121089999564,
+      "solution_count": 15664,
+      "makespan": 171.0968546864814
+    },
+    {
+      "time_elapsed_s": 2.2277108000125736,
+      "solution_count": 15710,
+      "makespan": 171.09634424380926
+    },
+    {
+      "time_elapsed_s": 2.2532469999277964,
+      "solution_count": 15894,
+      "makespan": 171.08370967450452
+    },
+    {
+      "time_elapsed_s": 2.284934399998747,
+      "solution_count": 16120,
+      "makespan": 171.08083732836474
+    },
+    {
+      "time_elapsed_s": 2.3113680999958888,
+      "solution_count": 16304,
+      "makespan": 171.07873166619643
+    },
+    {
+      "time_elapsed_s": 2.336559299961664,
+      "solution_count": 16482,
+      "makespan": 171.07359673148352
+    },
+    {
+      "time_elapsed_s": 3.658265499980189,
+      "solution_count": 25096,
+      "makespan": 171.05794896239007
+    },
+    {
+      "time_elapsed_s": 3.664818499935791,
+      "solution_count": 25140,
+      "makespan": 171.05723468275716
+    },
+    {
+      "time_elapsed_s": 3.6739645999623463,
+      "solution_count": 25204,
+      "makespan": 171.0517209601084
+    },
+    {
+      "time_elapsed_s": 3.6805341999279335,
+      "solution_count": 25251,
+      "makespan": 171.05157038968935
+    },
+    {
+      "time_elapsed_s": 3.6879006000235677,
+      "solution_count": 25304,
+      "makespan": 171.02887798047863
+    },
+    {
+      "time_elapsed_s": 3.6944611999206245,
+      "solution_count": 25350,
+      "makespan": 171.02510497712265
+    },
+    {
+      "time_elapsed_s": 3.7009566000197083,
+      "solution_count": 25397,
+      "makespan": 171.0137671504628
+    },
+    {
+      "time_elapsed_s": 3.701232000021264,
+      "solution_count": 25399,
+      "makespan": 171.01376715046277
+    },
+    {
+      "time_elapsed_s": 3.707629599957727,
+      "solution_count": 25445,
+      "makespan": 171.00216451584268
+    },
+    {
+      "time_elapsed_s": 3.733507600030862,
+      "solution_count": 25629,
+      "makespan": 170.9840584647585
+    },
+    {
+      "time_elapsed_s": 3.780434799962677,
+      "solution_count": 25956,
+      "makespan": 170.94457072581142
+    },
+    {
+      "time_elapsed_s": 3.7903959000250325,
+      "solution_count": 26024,
+      "makespan": 170.87880018443192
+    },
+    {
+      "time_elapsed_s": 3.793491299962625,
+      "solution_count": 26046,
+      "makespan": 170.87695569463304
+    },
+    {
+      "time_elapsed_s": 3.796724700019695,
+      "solution_count": 26069,
+      "makespan": 170.87468271567005
+    },
+    {
+      "time_elapsed_s": 3.7999283999670297,
+      "solution_count": 26091,
+      "makespan": 170.86730268273917
+    },
+    {
+      "time_elapsed_s": 3.8038718999596313,
+      "solution_count": 26119,
+      "makespan": 170.865134995269
+    },
+    {
+      "time_elapsed_s": 3.8080811999971047,
+      "solution_count": 26148,
+      "makespan": 170.8614604867661
+    },
+    {
+      "time_elapsed_s": 3.8121081999270245,
+      "solution_count": 26176,
+      "makespan": 170.8575597758988
+    },
+    {
+      "time_elapsed_s": 3.8170956999529153,
+      "solution_count": 26211,
+      "makespan": 170.85677761813275
+    },
+    {
+      "time_elapsed_s": 3.821437199949287,
+      "solution_count": 26239,
+      "makespan": 170.85333469058781
+    },
+    {
+      "time_elapsed_s": 3.827214099932462,
+      "solution_count": 26280,
+      "makespan": 170.84758294975342
+    },
+    {
+      "time_elapsed_s": 3.8313713999232277,
+      "solution_count": 26309,
+      "makespan": 170.84751981875124
+    },
+    {
+      "time_elapsed_s": 3.8370146999368444,
+      "solution_count": 26349,
+      "makespan": 170.83676269683195
+    },
+    {
+      "time_elapsed_s": 3.842616399982944,
+      "solution_count": 26387,
+      "makespan": 170.83658270886727
+    },
+    {
+      "time_elapsed_s": 3.8500597999664024,
+      "solution_count": 26439,
+      "makespan": 170.83481933215648
+    },
+    {
+      "time_elapsed_s": 3.854362400015816,
+      "solution_count": 26468,
+      "makespan": 170.8342272217705
+    },
+    {
+      "time_elapsed_s": 3.862010999931954,
+      "solution_count": 26522,
+      "makespan": 170.76881362037625
+    },
+    {
+      "time_elapsed_s": 3.868798799929209,
+      "solution_count": 26570,
+      "makespan": 170.72015148137908
+    },
+    {
+      "time_elapsed_s": 3.873835499980487,
+      "solution_count": 26605,
+      "makespan": 170.71416937623567
+    },
+    {
+      "time_elapsed_s": 3.877761699957773,
+      "solution_count": 26633,
+      "makespan": 170.71400658673272
+    },
+    {
+      "time_elapsed_s": 3.885476000024937,
+      "solution_count": 26686,
+      "makespan": 170.71207760113683
+    },
+    {
+      "time_elapsed_s": 3.8912457999540493,
+      "solution_count": 26727,
+      "makespan": 170.7082959641596
+    },
+    {
+      "time_elapsed_s": 3.8954434000188485,
+      "solution_count": 26756,
+      "makespan": 170.70731547278103
+    },
+    {
+      "time_elapsed_s": 3.902833199943416,
+      "solution_count": 26808,
+      "makespan": 170.70050527193018
+    },
+    {
+      "time_elapsed_s": 3.9094784000189975,
+      "solution_count": 26854,
+      "makespan": 170.6925331747775
+    },
+    {
+      "time_elapsed_s": 3.9186463999794796,
+      "solution_count": 26918,
+      "makespan": 170.68180889068208
+    },
+    {
+      "time_elapsed_s": 3.929019400035031,
+      "solution_count": 26991,
+      "makespan": 170.66818581141655
+    },
+    {
+      "time_elapsed_s": 3.956213800003752,
+      "solution_count": 27176,
+      "makespan": 170.64650046165121
+    },
+    {
+      "time_elapsed_s": 3.9827775999438018,
+      "solution_count": 27360,
+      "makespan": 170.60505578531337
+    },
+    {
+      "time_elapsed_s": 3.995991099975072,
+      "solution_count": 27450,
+      "makespan": 170.60345430453023
+    },
+    {
+      "time_elapsed_s": 3.99908239999786,
+      "solution_count": 27472,
+      "makespan": 170.60330176993165
+    },
+    {
+      "time_elapsed_s": 4.00934819993563,
+      "solution_count": 27542,
+      "makespan": 170.60273257560002
+    },
+    {
+      "time_elapsed_s": 4.01278889994137,
+      "solution_count": 27564,
+      "makespan": 170.60147661940343
+    },
+    {
+      "time_elapsed_s": 4.04207929992117,
+      "solution_count": 27766,
+      "makespan": 170.5842634777676
+    },
+    {
+      "time_elapsed_s": 4.245183799997903,
+      "solution_count": 29090,
+      "makespan": 170.578574183545
+    },
+    {
+      "time_elapsed_s": 4.25558719993569,
+      "solution_count": 29159,
+      "makespan": 170.57857418354493
+    },
+    {
+      "time_elapsed_s": 4.257159400032833,
+      "solution_count": 29170,
+      "makespan": 170.52110943873615
+    },
+    {
+      "time_elapsed_s": 4.260397000005469,
+      "solution_count": 29192,
+      "makespan": 170.5134560753601
+    },
+    {
+      "time_elapsed_s": 4.265035099931993,
+      "solution_count": 29222,
+      "makespan": 170.5081934972608
+    },
+    {
+      "time_elapsed_s": 4.271277599968016,
+      "solution_count": 29264,
+      "makespan": 170.4455709591943
+    },
+    {
+      "time_elapsed_s": 4.2755396999418736,
+      "solution_count": 29293,
+      "makespan": 170.44301712297263
+    },
+    {
+      "time_elapsed_s": 4.279612599988468,
+      "solution_count": 29321,
+      "makespan": 170.4376376208942
+    },
+    {
+      "time_elapsed_s": 4.285141699947417,
+      "solution_count": 29357,
+      "makespan": 170.43586333831217
+    },
+    {
+      "time_elapsed_s": 4.293954299995676,
+      "solution_count": 29417,
+      "makespan": 170.41956770390777
+    },
+    {
+      "time_elapsed_s": 4.301648800028488,
+      "solution_count": 29469,
+      "makespan": 170.41466313515969
+    },
+    {
+      "time_elapsed_s": 4.312981499941088,
+      "solution_count": 29545,
+      "makespan": 170.40223774755194
+    },
+    {
+      "time_elapsed_s": 4.327717399923131,
+      "solution_count": 29645,
+      "makespan": 170.39276452682086
+    },
+    {
+      "time_elapsed_s": 4.332053099991754,
+      "solution_count": 29673,
+      "makespan": 170.39198702282735
+    },
+    {
+      "time_elapsed_s": 4.360148299951106,
+      "solution_count": 29863,
+      "makespan": 170.3721237627337
+    },
+    {
+      "time_elapsed_s": 4.389716499950737,
+      "solution_count": 30065,
+      "makespan": 170.35514308768515
+    },
+    {
+      "time_elapsed_s": 6.72816449997481,
+      "solution_count": 44990,
+      "makespan": 170.3430719106084
+    },
+    {
+      "time_elapsed_s": 6.74016849999316,
+      "solution_count": 45069,
+      "makespan": 170.3426302626526
+    },
+    {
+      "time_elapsed_s": 6.745172000024468,
+      "solution_count": 45103,
+      "makespan": 170.34069561864823
+    },
+    {
+      "time_elapsed_s": 6.751913000014611,
+      "solution_count": 45149,
+      "makespan": 170.34069228934962
+    },
+    {
+      "time_elapsed_s": 6.760257299989462,
+      "solution_count": 45204,
+      "makespan": 170.33837443210226
+    },
+    {
+      "time_elapsed_s": 6.765443600015715,
+      "solution_count": 45239,
+      "makespan": 170.33469345288972
+    },
+    {
+      "time_elapsed_s": 6.774997400003485,
+      "solution_count": 45303,
+      "makespan": 170.33399403642343
+    },
+    {
+      "time_elapsed_s": 6.787227199994959,
+      "solution_count": 45385,
+      "makespan": 170.331768660747
+    },
+    {
+      "time_elapsed_s": 6.792827900033444,
+      "solution_count": 45423,
+      "makespan": 170.33116815783413
+    },
+    {
+      "time_elapsed_s": 6.821686599985696,
+      "solution_count": 45619,
+      "makespan": 170.32648286939738
+    },
+    {
+      "time_elapsed_s": 6.826027199975215,
+      "solution_count": 45648,
+      "makespan": 170.32554475506277
+    },
+    {
+      "time_elapsed_s": 6.860601700027473,
+      "solution_count": 45880,
+      "makespan": 170.30766208629814
+    },
+    {
+      "time_elapsed_s": 6.8996162000112236,
+      "solution_count": 46142,
+      "makespan": 170.28457907512546
+    },
+    {
+      "time_elapsed_s": 8.189626000006683,
+      "solution_count": 54309,
+      "makespan": 170.2463548805338
+    },
+    {
+      "time_elapsed_s": 8.193445999990217,
+      "solution_count": 54334,
+      "makespan": 170.22955466712548
+    },
+    {
+      "time_elapsed_s": 8.196752700023353,
+      "solution_count": 54356,
+      "makespan": 170.2266113094207
+    },
+    {
+      "time_elapsed_s": 8.201079100021161,
+      "solution_count": 54384,
+      "makespan": 170.2192175473037
+    },
+    {
+      "time_elapsed_s": 8.205408899928443,
+      "solution_count": 54413,
+      "makespan": 170.21807264299508
+    },
+    {
+      "time_elapsed_s": 8.208704399992712,
+      "solution_count": 54435,
+      "makespan": 170.21722392814323
+    },
+    {
+      "time_elapsed_s": 8.212266799993813,
+      "solution_count": 54458,
+      "makespan": 170.20538703396488
+    },
+    {
+      "time_elapsed_s": 8.215498100034893,
+      "solution_count": 54480,
+      "makespan": 170.20104751195035
+    },
+    {
+      "time_elapsed_s": 8.220598899992183,
+      "solution_count": 54514,
+      "makespan": 170.1975007387168
+    },
+    {
+      "time_elapsed_s": 8.225811199983582,
+      "solution_count": 54549,
+      "makespan": 170.18600981283498
+    },
+    {
+      "time_elapsed_s": 8.228324000025168,
+      "solution_count": 54565,
+      "makespan": 170.18511162476068
+    },
+    {
+      "time_elapsed_s": 8.233415100025013,
+      "solution_count": 54599,
+      "makespan": 170.18294016809722
+    },
+    {
+      "time_elapsed_s": 8.23930679995101,
+      "solution_count": 54639,
+      "makespan": 170.1720024353848
+    },
+    {
+      "time_elapsed_s": 8.247018299996853,
+      "solution_count": 54691,
+      "makespan": 170.17123610940234
+    },
+    {
+      "time_elapsed_s": 8.249397999956273,
+      "solution_count": 54707,
+      "makespan": 170.16866934234176
+    },
+    {
+      "time_elapsed_s": 8.254694300005212,
+      "solution_count": 54743,
+      "makespan": 170.14391816208268
+    },
+    {
+      "time_elapsed_s": 8.259821299929172,
+      "solution_count": 54777,
+      "makespan": 170.14309670013236
+    },
+    {
+      "time_elapsed_s": 8.265184900024906,
+      "solution_count": 54812,
+      "makespan": 170.13952876997408
+    },
+    {
+      "time_elapsed_s": 8.27030560001731,
+      "solution_count": 54847,
+      "makespan": 170.13119643083067
+    },
+    {
+      "time_elapsed_s": 8.275685500004329,
+      "solution_count": 54881,
+      "makespan": 170.1167127161753
+    },
+    {
+      "time_elapsed_s": 8.283699300023727,
+      "solution_count": 54934,
+      "makespan": 170.1121494279376
+    },
+    {
+      "time_elapsed_s": 8.291634000022896,
+      "solution_count": 54986,
+      "makespan": 170.1068183931388
+    },
+    {
+      "time_elapsed_s": 8.301172800012864,
+      "solution_count": 55050,
+      "makespan": 170.10207789817284
+    },
+    {
+      "time_elapsed_s": 8.314626900013536,
+      "solution_count": 55139,
+      "makespan": 170.0961620564725
+    },
+    {
+      "time_elapsed_s": 8.344056600006297,
+      "solution_count": 55335,
+      "makespan": 170.0819910917371
+    },
+    {
+      "time_elapsed_s": 9.724323399947025,
+      "solution_count": 64086,
+      "makespan": 170.061436978779
+    },
+    {
+      "time_elapsed_s": 9.730300499941222,
+      "solution_count": 64116,
+      "makespan": 170.05017363033352
+    },
+    {
+      "time_elapsed_s": 9.733796100015752,
+      "solution_count": 64138,
+      "makespan": 170.0485827803622
+    },
+    {
+      "time_elapsed_s": 9.738302999990992,
+      "solution_count": 64168,
+      "makespan": 170.01287115842422
+    },
+    {
+      "time_elapsed_s": 9.740829900023527,
+      "solution_count": 64185,
+      "makespan": 170.01156561004484
+    },
+    {
+      "time_elapsed_s": 9.745912099955603,
+      "solution_count": 64219,
+      "makespan": 170.0062056185797
+    },
+    {
+      "time_elapsed_s": 9.749383499962278,
+      "solution_count": 64241,
+      "makespan": 170.00619035804903
+    },
+    {
+      "time_elapsed_s": 9.751733999932185,
+      "solution_count": 64257,
+      "makespan": 170.00267158052944
+    },
+    {
+      "time_elapsed_s": 9.75904759997502,
+      "solution_count": 64306,
+      "makespan": 169.9939385979365
+    },
+    {
+      "time_elapsed_s": 9.766245699953288,
+      "solution_count": 64352,
+      "makespan": 169.98620474547624
+    },
+    {
+      "time_elapsed_s": 9.774134199949913,
+      "solution_count": 64404,
+      "makespan": 169.98347351415453
+    },
+    {
+      "time_elapsed_s": 9.782310099923052,
+      "solution_count": 64457,
+      "makespan": 169.97615724117347
+    },
+    {
+      "time_elapsed_s": 9.789496699930169,
+      "solution_count": 64504,
+      "makespan": 169.9680893528935
+    },
+    {
+      "time_elapsed_s": 9.796693900018,
+      "solution_count": 64550,
+      "makespan": 169.96049873480206
+    },
+    {
+      "time_elapsed_s": 9.807671000016853,
+      "solution_count": 64622,
+      "makespan": 169.95249073759896
+    },
+    {
+      "time_elapsed_s": 9.817648699972779,
+      "solution_count": 64686,
+      "makespan": 169.94114928779467
+    },
+    {
+      "time_elapsed_s": 9.82935389992781,
+      "solution_count": 64762,
+      "makespan": 169.93372762542637
+    },
+    {
+      "time_elapsed_s": 9.840001699980348,
+      "solution_count": 64832,
+      "makespan": 169.93292898867657
+    },
+    {
+      "time_elapsed_s": 9.849938299972564,
+      "solution_count": 64896,
+      "makespan": 169.9316400656636
+    },
+    {
+      "time_elapsed_s": 9.864242999930866,
+      "solution_count": 64990,
+      "makespan": 169.9315421953111
+    },
+    {
+      "time_elapsed_s": 9.874101900029927,
+      "solution_count": 65054,
+      "makespan": 169.9312268442199
+    },
+    {
+      "time_elapsed_s": 9.891527600004338,
+      "solution_count": 65166,
+      "makespan": 169.92531110840892
+    },
+    {
+      "time_elapsed_s": 9.898487000027671,
+      "solution_count": 65212,
+      "makespan": 169.9237827000477
+    },
+    {
+      "time_elapsed_s": 9.91498879995197,
+      "solution_count": 65319,
+      "makespan": 169.923670066065
+    },
+    {
+      "time_elapsed_s": 9.934037299943157,
+      "solution_count": 65443,
+      "makespan": 169.9144454950339
+    },
+    {
+      "time_elapsed_s": 9.954177799983881,
+      "solution_count": 65574,
+      "makespan": 169.89724420650484
+    },
+    {
+      "time_elapsed_s": 9.968553700018674,
+      "solution_count": 65668,
+      "makespan": 169.89363719717488
+    },
+    {
+      "time_elapsed_s": 9.973809499992058,
+      "solution_count": 65702,
+      "makespan": 169.89197402822887
+    },
+    {
+      "time_elapsed_s": 9.980804699938744,
+      "solution_count": 65748,
+      "makespan": 169.89090266016532
+    },
+    {
+      "time_elapsed_s": 10.00004389998503,
+      "solution_count": 65873,
+      "makespan": 169.8766152099182
+    },
+    {
+      "time_elapsed_s": 10.003429999924265,
+      "solution_count": 65895,
+      "makespan": 169.87476555373277
+    },
+    {
+      "time_elapsed_s": 10.015004999935627,
+      "solution_count": 65971,
+      "makespan": 169.87236737645793
+    },
+    {
+      "time_elapsed_s": 10.029089799965732,
+      "solution_count": 66063,
+      "makespan": 169.87106007262295
+    },
+    {
+      "time_elapsed_s": 10.038014199933968,
+      "solution_count": 66121,
+      "makespan": 169.87006304070184
+    },
+    {
+      "time_elapsed_s": 10.051527799922042,
+      "solution_count": 66209,
+      "makespan": 169.86838728559894
+    },
+    {
+      "time_elapsed_s": 10.066913699964061,
+      "solution_count": 66309,
+      "makespan": 169.8667936128636
+    },
+    {
+      "time_elapsed_s": 10.075717499945313,
+      "solution_count": 66367,
+      "makespan": 169.86660056789165
+    },
+    {
+      "time_elapsed_s": 10.10248290002346,
+      "solution_count": 66540,
+      "makespan": 169.86546078760236
+    },
+    {
+      "time_elapsed_s": 10.111280499957502,
+      "solution_count": 66598,
+      "makespan": 169.86517485114373
+    },
+    {
+      "time_elapsed_s": 10.140089499996975,
+      "solution_count": 66785,
+      "makespan": 169.85727002086364
+    },
+    {
+      "time_elapsed_s": 141.66327299992554,
+      "solution_count": 859619,
+      "makespan": 169.84814115657323
+    },
+    {
+      "time_elapsed_s": 141.66822340001818,
+      "solution_count": 859651,
+      "makespan": 169.83260059518327
+    },
+    {
+      "time_elapsed_s": 141.67063860001508,
+      "solution_count": 859667,
+      "makespan": 169.82110714102583
+    },
+    {
+      "time_elapsed_s": 141.67392530001234,
+      "solution_count": 859689,
+      "makespan": 169.8088703487629
+    },
+    {
+      "time_elapsed_s": 141.67629189998843,
+      "solution_count": 859705,
+      "makespan": 169.805404193728
+    },
+    {
+      "time_elapsed_s": 141.6805968999397,
+      "solution_count": 859734,
+      "makespan": 169.79916607627894
+    },
+    {
+      "time_elapsed_s": 141.68652089999523,
+      "solution_count": 859774,
+      "makespan": 169.7964299042128
+    },
+    {
+      "time_elapsed_s": 141.69106999994256,
+      "solution_count": 859804,
+      "makespan": 169.78771303550474
+    },
+    {
+      "time_elapsed_s": 141.69522360002156,
+      "solution_count": 859832,
+      "makespan": 169.77918823981804
+    },
+    {
+      "time_elapsed_s": 141.70746049995068,
+      "solution_count": 859914,
+      "makespan": 169.77574527109024
+    },
+    {
+      "time_elapsed_s": 141.7223110999912,
+      "solution_count": 860014,
+      "makespan": 169.7742504396639
+    },
+    {
+      "time_elapsed_s": 141.72960570000578,
+      "solution_count": 860063,
+      "makespan": 169.77059541240195
+    },
+    {
+      "time_elapsed_s": 141.7328683999367,
+      "solution_count": 860085,
+      "makespan": 169.77037259156273
+    },
+    {
+      "time_elapsed_s": 141.7380906000035,
+      "solution_count": 860119,
+      "makespan": 169.7652750565547
+    },
+    {
+      "time_elapsed_s": 141.74143970001023,
+      "solution_count": 860141,
+      "makespan": 169.76485205088414
+    }
+  ]
+}
